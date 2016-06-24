@@ -1,0 +1,3 @@
+include CHANGELOG
+include README.rst
+recursive-include soda *.py
