@@ -1,0 +1,3 @@
+# Ignore setuptools output
+/dist/
+/*.egg-info/
