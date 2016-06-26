@@ -1,2 +1,5 @@
+1.0.0
+- Introduce a complete deploy scheme as Fabric tasks
+
 0.0.0-dev
 - Experimenting with highly destructive stuff.
