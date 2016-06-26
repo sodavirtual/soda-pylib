@@ -105,3 +105,9 @@ django.collectstatic
 --------------------
 
 Run Django's `collectstatic` management command.
+
+
+django.migrate
+--------------------
+
+Run Django's `migrate` management command.
