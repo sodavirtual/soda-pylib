@@ -1,3 +1,7 @@
 # Ignore setuptools output
 /dist/
 /*.egg-info/
+
+# Ignore Python byte-compiled files
+*.pyc
+__pycache__/
