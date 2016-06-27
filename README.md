@@ -117,3 +117,14 @@ from fabric.api import execute
 from soda.deploy import django
 execute(django.migrate)
 ```
+
+
+### `opbeat.register_deploy`
+
+Register a deployment to the Opbeat integration.
+
+```python
+from fabric.api import execute
+from soda.deploy import opbeat
+execute(opbeat.register_deploy)
+```
