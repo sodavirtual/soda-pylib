@@ -10,10 +10,10 @@ projets at SODA Virtual.
 soda.deploy
 -----------
 
-A collection of Fabric tasks that will aid deploying projects to _Virtual
-Private Servers_. They will require an `env.roledefs` to work properly:
+A collection of Fabric tasks that will aid deploying projects to *Virtual
+Private Servers*. They will require an `env.roledefs` to work properly:
 
-.. code-block:: python
+::
     from fabric.api import env
 
 
@@ -33,81 +33,91 @@ Private Servers_. They will require an `env.roledefs` to work properly:
 
 The following tasks are available for use:
 
-git.display_version
--------------------
+``git.display_version``
+-----------------------
 
 Display the active revision at the remote host.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import git
     execute(git.display_version)
 
 
-git.update_sources
-------------------
+``git.update_sources``
+----------------------
 
-Fetch sources from the default remote (acquired by `git remote`) and checkout
+Fetch sources from the default remote (acquired by ``git remote``) and checkout
 to specified revision.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import git
     execute(git.update_sources, 'master')
 
 
-supervisor.stop
----------------
+``supervisor.stop``
+-------------------
 
 Stop the app's Supervisor main service.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import supervisor
     execute(supervisor.stop)
 
 
-supervisor.start
-----------------
+``supervisor.start``
+--------------------
 
 Start the app's Supervisor main service.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import supervisor
     execute(supervisor.start)
 
 
-deps.install_python_libs
-------------------------
+``deps.install_python_libs``
+----------------------------
 
-Install Python dependencies as defined in the project's `requirements.txt`.
+Install Python dependencies as defined in the project's ``requirements.txt``.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import deps
     execute(deps.install_python_libs)
 
 
-deps.install_bower_libs
-------------------------
+``deps.install_bower_libs``
+----------------------------
 
 Install front-end dependencies from Bower, as defined in the project's
-`bower.json`.
+``bower.json``.
 
-.. code-block:: python
+::
     from fabric.api import execute
     from soda.deploy import deps
     execute(deps.install_python_libs)
 
 
-django.collectstatic
---------------------
+``django.collectstatic``
+------------------------
 
-Run Django's `collectstatic` management command.
+Run Django's ``collectstatic`` management command.
+
+::
+    from fabric.api import execute
+    from soda.deploy import django
+    execute(django.collectstatic)
 
 
-django.migrate
---------------------
+``django.migrate``
+------------------
 
-Run Django's `migrate` management command.
+Run Django's ``migrate`` management command.
+
+::
+    from fabric.api import execute
+    from soda.deploy import django
+    execute(django.migrate)
