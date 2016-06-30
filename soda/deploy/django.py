@@ -25,7 +25,7 @@ def collectstatic():
                 'cdn', 'debug_toolbar', 'django_extensions', 'less',
                 'package.json', 'README*', 'scss',
             ])
-        run('./manage.py collectstatic -c --noinput {}'.format(ignore))
+        run('./manage.py collectstatic --noinput {}'.format(ignore))
 
 
 @task
