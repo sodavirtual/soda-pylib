@@ -60,9 +60,9 @@ def renew_certs():
 
     # Display a result message
     if result.succeeded:
-        misc.success('SSL certificates successfully renewed!')
+        misc.success('SSL certificates were successfully renewed!')
     else:
-        misc.error('Failed to renewed SSL certificates.', abort_task=False)
+        misc.error('Failed to renew SSL certificates.', abort_task=False)
 
     # Reload nginx
     execute(nginx.reload)
