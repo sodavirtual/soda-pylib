@@ -41,3 +41,28 @@ def create_cert():
 
     # Put nginx back up
     execute(nginx.start)
+
+
+@task
+def renew_certs():
+    """Renew SSL certificates
+    """
+    from soda.host import nginx  # Import here to avoid wrong Fabric --list
+
+    role, roledef = misc.get_effective_role()
+    logged_user = settings(user='root')
+    cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
+    warn_only = settings(warn_only=True)
+
+    # Generate the certificate
+    with logged_user, cwd, warn_only:
+        result = run('./letsencrypt-auto renew')
+
+    # Display a result message
+    if result.succeeded:
+        misc.success('SSL certificates successfully renewed!')
+    else:
+        misc.error('Failed to renewed SSL certificates.', abort_task=False)
+
+    # Reload nginx
+    execute(nginx.reload)
