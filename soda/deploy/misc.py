@@ -1,5 +1,5 @@
 from fabric.api import abort, env
-from fabric.colors import blue, red
+from fabric.colors import blue, green, red
 
 
 def get_effective_role():
@@ -21,3 +21,9 @@ def error(msg):
     """Shortcut to abort a task and display an error message
     """
     abort(red(msg))
+
+
+def success(msg):
+    """Shorcut to display a success message
+    """
+    print(green('\n{}'.format(msg)))
