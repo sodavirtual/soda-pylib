@@ -17,10 +17,15 @@ def info(msg):
     print(blue('\n{}'.format(msg)))
 
 
-def error(msg):
+def error(msg, abort_task=True):
     """Shortcut to abort a task and display an error message
     """
-    abort(red(msg))
+    msg = red(msg)
+
+    if abort_task:
+        abort(msg)
+
+    print(msg)
 
 
 def success(msg):
