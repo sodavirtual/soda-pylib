@@ -1,4 +1,4 @@
-from fabric.api import run, task
+from fabric.api import local, run, task
 from fabric.context_managers import cd, hide, settings
 
 from soda.deploy import misc
@@ -43,3 +43,40 @@ def update_sources(revision):
         # Check out to specified revision
         misc.info('Checking out to specified revision...')
         print(run('git checkout -f {}/{}'.format(git_remote, revision)))
+
+
+@task
+def check_local_remote(revision):
+    """Abort if local and remote ref don't match
+    """
+    role, roledef = misc.get_effective_role()
+    logged_user = settings(user=roledef['user'])
+    cwd = cd(roledef['app_path'])
+
+    misc.info('Checking local and remote revisions...')
+    with hide('everything'), logged_user, cwd:
+        # Check local revision
+        local_branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
+        if local_branch != revision:
+            misc.error('You are currently not at {}.'.format(revision))
+
+        # Get the hash of the latest commit in `revision` (remote)
+        git_remote = run('git remote')
+        remote_hash = run('git rev-parse --short --verify {}/{}'.format(
+            git_remote, revision,
+        ))
+
+        # Get the hash of the latest commit in `revision` (local)
+        local_hash = local(
+            'git rev-parse --short --verify {}'.format(revision),
+            capture=True
+        )
+
+    # Compare local and remote commit hashes
+    if local_hash != remote_hash:
+        misc.error(
+            'The local and remote revisions must match. You may need to '
+            'update one of both of them.'
+        )
+
+    misc.success('Revisions match.')
