@@ -59,7 +59,7 @@ def renew_certs():
 
     # Generate the certificate
     with logged_user, cwd, warn_only:
-        result = run('./letsencrypt-auto renew')
+        result = run('./letsencrypt-auto renew --standalone')
 
     # Display a result message
     if result.succeeded:
