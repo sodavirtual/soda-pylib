@@ -9,13 +9,7 @@ from soda.deploy import misc
 def stop():
     """Stop the nginx process
     """
-    # Acquire the `input` function from Python 2 or 3
-    try:
-        input = raw_input
-    except NameError:
-        pass
-
-    if input(red('Are you sure you want to stop nginx? (y/n) ')) != 'y':
+    if misc.input(red('Are you sure you want to stop nginx? (y/n) ')) != 'y':
         abort('Wise.')
 
     misc.info('Stopping nginx...')

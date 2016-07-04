@@ -2,6 +2,13 @@ from fabric.api import abort, env
 from fabric.colors import blue, green, red
 
 
+# Acquire the `input` function from Python 2 or 3
+try:
+    input = raw_input
+except NameError:
+    pass
+
+
 def get_effective_role():
     """Acquire the role definition according to current host
     """

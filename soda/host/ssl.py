@@ -4,13 +4,6 @@ from fabric.context_managers import cd, settings
 from soda.deploy import misc
 
 
-# Acquire the `input` function from Python 2 or 3
-try:
-    input = raw_input
-except NameError:
-    pass
-
-
 @task
 def create_cert():
     """Create a standalone SSL certificate for the domains chain
@@ -21,8 +14,8 @@ def create_cert():
     execute(nginx.stop)
 
     # Retrieve necessary information from the user
-    email = input('Insert the certificate manager email address: ')
-    domains = input('Insert the domains to apply: ').split()
+    email = misc.input('Insert the certificate manager email address: ')
+    domains = misc.input('Insert the domains to apply: ').split()
 
     role, roledef = misc.get_effective_role()
     logged_user = settings(user='root')
