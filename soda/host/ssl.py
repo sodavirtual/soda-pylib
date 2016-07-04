@@ -49,6 +49,9 @@ def renew_certs():
     """
     from soda.host import nginx  # Import here to avoid wrong Fabric --list
 
+    # Stop nginx first
+    execute(nginx.stop)
+
     role, roledef = misc.get_effective_role()
     logged_user = settings(user='root')
     cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
@@ -64,5 +67,5 @@ def renew_certs():
     else:
         misc.error('Failed to renew SSL certificates.', abort_task=False)
 
-    # Reload nginx
-    execute(nginx.reload)
+    # Put nginx back up
+    execute(nginx.start)
