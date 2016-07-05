@@ -58,7 +58,9 @@ def check_local_remote(revision):
         # Check local revision
         local_branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
         if local_branch != revision:
-            misc.error('You are currently not at {}.'.format(revision))
+            misc.error(
+                'You are currently not at {}.'.format(revision),
+                abort_task=not env.force)
 
         # Get the hash of the latest commit in `revision` (remote)
         git_remote = run('git remote')
@@ -76,7 +78,6 @@ def check_local_remote(revision):
     if local_hash != remote_hash:
         misc.error(
             'The local and remote revisions must match. You may need to '
-            'update one of both of them.'
-        )
+            'update one of both of them.', abort_task=not env.force)
 
     misc.success('Revisions match.')
