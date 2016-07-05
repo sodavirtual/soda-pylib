@@ -3,10 +3,11 @@ import os
 from fabric.api import run, task
 from fabric.context_managers import cd, prefix, settings, shell_env
 
-from soda.deploy import misc
+from soda.deploy import misc, lock
 
 
 @task
+@lock.lock_task
 def collectstatic():
     """Run Django's `collectstatic` management command
     """
@@ -29,6 +30,7 @@ def collectstatic():
 
 
 @task
+@lock.lock_task
 def migrate():
     """Run Django's `migrate` management command
     """

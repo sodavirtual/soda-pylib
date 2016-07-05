@@ -3,10 +3,11 @@ import os
 from fabric.api import run, task
 from fabric.context_managers import cd, prefix, settings
 
-from soda.deploy import misc
+from soda.deploy import misc, lock
 
 
 @task
+@lock.lock_task
 def install_python_libs():
     """Install or update Python dependencies from `requirements.txt`
     """
@@ -22,6 +23,7 @@ def install_python_libs():
 
 
 @task
+@lock.lock_task
 def install_bower_libs():
     """Install or update front-end dependencies from Bower
     """
