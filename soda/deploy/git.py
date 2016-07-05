@@ -1,4 +1,4 @@
-from fabric.api import local, run, task
+from fabric.api import env, local, run, task
 from fabric.context_managers import cd, hide, settings
 
 from soda.deploy import misc
@@ -38,7 +38,7 @@ def update_sources(revision):
         git_status = run('git status --porcelain')
         if filter(lambda l: l and not l[:2] == '??', git_status.split('\n')):
             print(git_status)
-            misc.error('App directory is dirty.')
+            misc.error('App directory is dirty.', abort_task=env.force)
 
         # Check out to specified revision
         misc.info('Checking out to specified revision...')
