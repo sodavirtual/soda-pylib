@@ -1,7 +1,7 @@
 from fabric.api import env, local, run, task
 from fabric.context_managers import cd, hide, settings
 
-from soda.deploy import misc
+from soda.deploy import misc, lock
 
 
 @task
@@ -18,6 +18,7 @@ def display_version():
 
 
 @task
+@lock.lock_task
 def update_sources(revision):
     """Fetch sources from default remote and checkout to revision
     """

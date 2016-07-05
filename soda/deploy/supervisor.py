@@ -1,10 +1,11 @@
 from fabric.api import run, task
 from fabric.context_managers import settings
 
-from soda.deploy import misc
+from soda.deploy import misc, lock
 
 
 @task
+@lock.lock_task
 def stop():
     """Stop the Supervisor service
     """
@@ -16,6 +17,7 @@ def stop():
 
 
 @task
+@lock.lock_task
 def start():
     """Start the Supervisor service
     """
