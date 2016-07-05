@@ -38,7 +38,7 @@ def update_sources(revision):
         git_status = run('git status --porcelain')
         if filter(lambda l: l and not l[:2] == '??', git_status.split('\n')):
             print(git_status)
-            misc.error('App directory is dirty.', abort_task=env.force)
+            misc.error('App directory is dirty.', abort_task=not env.force)
 
         # Check out to specified revision
         misc.info('Checking out to specified revision...')
