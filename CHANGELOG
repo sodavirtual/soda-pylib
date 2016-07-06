@@ -1,3 +1,12 @@
+1.2.0
+- Introduce Fabric tasks to manage nginx
+- Introduce a Fabric task to aid SSL certs creation
+- Introduce a Fabric task to renew SSL certs
+- Compare local and remote Git revisions to enforce integrity
+- Allow user to force overwrite of remote sources
+- Block concurrent Fabric tasks when they are conflicting
+- Import all deploy-related modules implicitly
+
 1.1.1
 - Remove '-c' param from collectstatic command
 
