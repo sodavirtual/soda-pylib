@@ -1,17 +1,18 @@
+from __future__ import absolute_import
 import os
 
 from fabric.api import run, task
 from fabric.context_managers import cd, prefix, settings, shell_env
 
-from soda.deploy import misc, lock
+from soda.misc import display, get_effective_role, lock_task
 
 
 @task
-@lock.lock_task
+@lock_task
 def collectstatic():
     """Run Django's `collectstatic` management command
     """
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user=roledef['user'])
     cwd = cd(roledef['app_path'])
     active_venv = prefix('source {}'.format(
@@ -19,7 +20,7 @@ def collectstatic():
     django_settings = shell_env(
         DJANGO_SETTINGS_MODULE=roledef['settings_module'])
 
-    misc.info('Collecting static files...')
+    display.info('Collecting static files...')
     with logged_user, cwd, active_venv, django_settings:
         ignore = ' '.join(
             "--ignore '{}'".format(pattern) for pattern in [
@@ -30,11 +31,11 @@ def collectstatic():
 
 
 @task
-@lock.lock_task
+@lock_task
 def migrate():
     """Run Django's `migrate` management command
     """
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user=roledef['user'])
     cwd = cd(roledef['app_path'])
     active_venv = prefix('source {}'.format(
@@ -42,6 +43,6 @@ def migrate():
     django_settings = shell_env(
         DJANGO_SETTINGS_MODULE=roledef['settings_module'])
 
-    misc.info('Running database migrations...')
+    display.info('Running database migrations...')
     with logged_user, cwd, active_venv, django_settings:
         run('./manage.py migrate --noinput')

@@ -1,28 +1,30 @@
+from __future__ import absolute_import
+
 from fabric.api import run, task
 from fabric.context_managers import settings
 
-from soda.deploy import misc, lock
+from soda.misc import display, get_effective_role, lock_task
 
 
 @task
-@lock.lock_task
+@lock_task
 def stop():
     """Stop the Supervisor service
     """
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user=roledef['user'])
     with logged_user:
-        misc.info('Stopping the app...')
+        display.info('Stopping the app...')
         run('supervisorctl stop {}'.format(roledef['service_name']))
 
 
 @task
-@lock.lock_task
+@lock_task
 def start():
     """Start the Supervisor service
     """
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user=roledef['user'])
     with logged_user:
-        misc.info('Starting the app...')
+        display.info('Starting the app...')
         run('supervisorctl start {}'.format(roledef['service_name']))
