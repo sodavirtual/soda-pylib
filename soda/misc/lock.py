@@ -1,10 +1,12 @@
+from __future__ import absolute_import
 import os.path
 
 from fabric.api import cd, env, hide, run
 from fabric.context_managers import settings
 from fabric.contrib import files
 
-from soda.deploy import misc
+from . import display
+from .main import get_effective_role
 
 
 class lock_task(object):
@@ -16,7 +18,7 @@ class lock_task(object):
         self.fn = fn
 
     def __call__(self, *args, **kwargs):
-        role, roledef = misc.get_effective_role()
+        role, roledef = get_effective_role()
 
         with settings(user=roledef['user']):
             lock_file = os.path.join(roledef['app_path'], 'soda-lock')
@@ -24,7 +26,7 @@ class lock_task(object):
 
         if file_exists:
             msg = 'There is a conflicting operation ongoing or broken.'
-            misc.error(msg, abort_task=not env.force)
+            display.error(msg, abort_task=not env.force)
 
         logged_user = settings(user=roledef['user'])
         cwd = cd(roledef['app_path'])

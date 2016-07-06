@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 from fabric.api import local, task
 from fabric.decorators import runs_once
 
-from soda.deploy import misc
+from soda.misc import display, get_effective_role
 
 
 BASE_URL = 'https://intake.opbeat.com/api/v1'
@@ -12,9 +14,9 @@ BASE_URL = 'https://intake.opbeat.com/api/v1'
 def register_deploy():
     """Register deployment to Opbeat
     """
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
 
-    misc.info('Registering deployment to Opbeat...')
+    display.info('Registering deployment to Opbeat...')
     revision = local('git log -n 1 --pretty="format:%H"', capture=True)
     branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
     local((

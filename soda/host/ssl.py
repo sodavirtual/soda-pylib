@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 from fabric.api import execute, run, task
 from fabric.context_managers import cd, settings
 
-from soda.deploy import misc
+from soda.misc import display, get_effective_role, input
 
 
 @task
@@ -14,10 +16,10 @@ def create_cert():
     execute(nginx.stop)
 
     # Retrieve necessary information from the user
-    email = misc.input('Insert the certificate manager email address: ')
-    domains = misc.input('Insert the domains to apply: ').split()
+    email = input('Insert the certificate manager email address: ')
+    domains = input('Insert the domains to apply: ').split()
 
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user='root')
     cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
     warn_only = settings(warn_only=True)
@@ -35,9 +37,9 @@ def create_cert():
 
     # Display a result message
     if result.succeeded:
-        misc.success('Key chain successfully created!')
+        display.success('Key chain successfully created!')
     else:
-        misc.error('Failed to create key chain.', abort_task=False)
+        display.error('Failed to create key chain.', abort_task=False)
 
     # Put nginx back up
     execute(nginx.start)
@@ -52,7 +54,7 @@ def renew_certs():
     # Stop nginx first
     execute(nginx.stop)
 
-    role, roledef = misc.get_effective_role()
+    role, roledef = get_effective_role()
     logged_user = settings(user='root')
     cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
     warn_only = settings(warn_only=True)
@@ -63,9 +65,9 @@ def renew_certs():
 
     # Display a result message
     if result.succeeded:
-        misc.success('SSL certificates were successfully renewed!')
+        display.success('SSL certificates were successfully renewed!')
     else:
-        misc.error('Failed to renew SSL certificates.', abort_task=False)
+        display.error('Failed to renew SSL certificates.', abort_task=False)
 
     # Put nginx back up
     execute(nginx.start)
