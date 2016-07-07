@@ -3,8 +3,8 @@ import os
 
 from fabric.api import run
 from fabric.context_managers import cd, prefix, settings
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role, lock_task
 
 
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-class InstallPythonLibsTask(Task):
+class InstallPythonLibsTask(BaseTask):
     """Install or update Python dependencies from `requirements.txt`
     """
 
@@ -33,7 +33,7 @@ class InstallPythonLibsTask(Task):
             run('pip install -r requirements.txt')
 
 
-class InstallBowerLibsTask(Task):
+class InstallBowerLibsTask(BaseTask):
     """Install or update front-end dependencies from Bower
     """
 

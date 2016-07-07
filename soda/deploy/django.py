@@ -3,8 +3,8 @@ import os
 
 from fabric.api import run
 from fabric.context_managers import cd, prefix, settings, shell_env
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role, lock_task
 
 
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-class CollectStaticTask(Task):
+class CollectStaticTask(BaseTask):
     """Run Django's `collectstatic` management command
     """
 
@@ -40,7 +40,7 @@ class CollectStaticTask(Task):
             run('./manage.py collectstatic --noinput {}'.format(ignore))
 
 
-class MigrateTask(Task):
+class MigrateTask(BaseTask):
     """Run Django's `migrate` management command
     """
 

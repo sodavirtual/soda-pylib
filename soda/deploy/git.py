@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import env, local, run
 from fabric.context_managers import cd, hide, settings
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role, lock_task
 
 
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-class DisplayVersionTask(Task):
+class DisplayVersionTask(BaseTask):
     """Display current project revision
     """
 
@@ -30,7 +30,7 @@ class DisplayVersionTask(Task):
             print(run('git log -1'))
 
 
-class UpdateSourcesTask(Task):
+class UpdateSourcesTask(BaseTask):
         """Fetch sources from default remote and checkout to revision
         """
 
@@ -67,7 +67,7 @@ class UpdateSourcesTask(Task):
                     git_remote, revision)))
 
 
-class CheckLocalRemoteTask(Task):
+class CheckLocalRemoteTask(BaseTask):
         """Abort if local and remote ref don't match
         """
 

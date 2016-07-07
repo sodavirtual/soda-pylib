@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import run
 from fabric.context_managers import settings
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role, lock_task
 
 
@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 
-class StopTask(Task):
+class StopTask(BaseTask):
     """Stop the Supervisor service
     """
 
@@ -28,7 +28,7 @@ class StopTask(Task):
             run('supervisorctl stop {}'.format(roledef['service_name']))
 
 
-class StartTask(Task):
+class StartTask(BaseTask):
     """Start the Supervisor service
     """
 

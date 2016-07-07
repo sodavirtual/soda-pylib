@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import local
 from fabric.decorators import runs_once
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role
 
 
@@ -15,7 +15,7 @@ __all__ = [
 BASE_URL = 'https://intake.opbeat.com/api/v1'
 
 
-class RegisterDeployTask(Task):
+class RegisterDeployTask(BaseTask):
     """Register deployment to Opbeat
     """
 

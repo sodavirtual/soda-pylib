@@ -3,8 +3,8 @@ from __future__ import absolute_import
 from fabric.api import abort, run
 from fabric.colors import red
 from fabric.context_managers import settings
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, input
 
 
@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-class StopTask(Task):
+class StopTask(BaseTask):
     """Stop the nginx process
     """
 
@@ -30,7 +30,7 @@ class StopTask(Task):
             run('nginx -s quit')
 
 
-class StartTask(Task):
+class StartTask(BaseTask):
     """Start the nginx process
     """
 
@@ -42,7 +42,7 @@ class StartTask(Task):
             run('nginx')
 
 
-class ReloadTask(Task):
+class ReloadTask(BaseTask):
     """reload the nginx process
     """
 

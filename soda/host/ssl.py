@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import execute, run
 from fabric.context_managers import cd, settings
-from fabric.tasks import Task
 
+from ..fabric.base import BaseTask
 from soda.misc import display, get_effective_role, input
 
 
@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 
-class CreateCert(Task):
+class CreateCert(BaseTask):
     """Create a standalone SSL certificate for the domains chain
     """
 
@@ -55,7 +55,7 @@ class CreateCert(Task):
         execute(nginx.start)
 
 
-class RenewCerts(Task):
+class RenewCerts(BaseTask):
     """Renew SSL certificates
     """
 
