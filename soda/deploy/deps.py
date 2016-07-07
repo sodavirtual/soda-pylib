@@ -1,37 +1,53 @@
 from __future__ import absolute_import
 import os
 
-from fabric.api import run, task
+from fabric.api import run
 from fabric.context_managers import cd, prefix, settings
+from fabric.tasks import Task
 
 from soda.misc import display, get_effective_role, lock_task
 
 
-@task
-@lock_task
-def install_python_libs():
+__all__ = [
+    'install_python_libs',
+    'install_bower_libs',
+]
+
+
+class InstallPythonLibsTask(Task):
     """Install or update Python dependencies from `requirements.txt`
     """
-    role, roledef = get_effective_role()
-    logged_user = settings(user=roledef['user'])
-    cwd = cd(roledef['app_path'])
-    active_venv = prefix('source {}'.format(
-        os.path.join(roledef['venv_path'], 'bin', 'activate')))
 
-    display.info('Updating Python dependencies...')
-    with logged_user, cwd, active_venv:
-        run('pip install -r requirements.txt')
+    name = 'install_python_libs'
+
+    @lock_task
+    def run(self):
+        role, roledef = get_effective_role()
+        logged_user = settings(user=roledef['user'])
+        cwd = cd(roledef['app_path'])
+        active_venv = prefix('source {}'.format(
+            os.path.join(roledef['venv_path'], 'bin', 'activate')))
+
+        display.info('Updating Python dependencies...')
+        with logged_user, cwd, active_venv:
+            run('pip install -r requirements.txt')
 
 
-@task
-@lock_task
-def install_bower_libs():
+class InstallBowerLibsTask(Task):
     """Install or update front-end dependencies from Bower
     """
-    role, roledef = get_effective_role()
-    logged_user = settings(user=roledef['user'])
-    cwd = cd(roledef['app_path'])
 
-    display.info('Updating front-end dependencies...')
-    with logged_user, cwd:
-        run('bower install')
+    name = 'install_bower_libs'
+
+    @lock_task
+    def run(self):
+        role, roledef = get_effective_role()
+        logged_user = settings(user=roledef['user'])
+        cwd = cd(roledef['app_path'])
+
+        display.info('Updating front-end dependencies...')
+        with logged_user, cwd:
+            run('bower install')
+
+install_python_libs = InstallPythonLibsTask()
+install_bower_libs = InstallBowerLibsTask()
