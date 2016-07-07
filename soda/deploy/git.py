@@ -3,8 +3,8 @@ from __future__ import absolute_import
 from fabric.api import env, local, run
 from fabric.context_managers import hide
 
-from ..fabric.base import BaseTask
-from soda.misc import display, lock_task
+from ..fabric.base import BaseTask, ConflictingTask
+from soda.misc import display
 
 
 __all__ = [
@@ -26,13 +26,12 @@ class DisplayVersionTask(BaseTask):
             print(run('git log -1'))
 
 
-class UpdateSourcesTask(BaseTask):
+class UpdateSourcesTask(ConflictingTask):
         """Fetch sources from default remote and checkout to revision
         """
 
         name = 'update_sources'
 
-        @lock_task
         def run(self, revision):
             with hide('everything'), self.user, self.in_app:
                 # Get the used remote name

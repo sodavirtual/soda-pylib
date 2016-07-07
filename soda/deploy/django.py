@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import run
 
-from ..fabric.base import BaseTask
-from soda.misc import display, lock_task
+from ..fabric.base import ConflictingTask
+from soda.misc import display
 
 
 __all__ = [
@@ -12,13 +12,12 @@ __all__ = [
 ]
 
 
-class CollectStaticTask(BaseTask):
+class CollectStaticTask(ConflictingTask):
     """Run Django's `collectstatic` management command
     """
 
-    name = 'collect_static'
+    name = 'collectstatic'
 
-    @lock_task
     def run(self):
         display.info('Collecting static files...')
         with self.user, self.in_app, self.venv, self.django_settings:
@@ -30,18 +29,17 @@ class CollectStaticTask(BaseTask):
             run('./manage.py collectstatic --noinput {}'.format(ignore))
 
 
-class MigrateTask(BaseTask):
+class MigrateTask(ConflictingTask):
     """Run Django's `migrate` management command
     """
 
     name = 'migrate'
 
-    @lock_task
     def run(self):
         display.info('Running database migrations...')
         with self.user, self.in_app, self.venv, self.django_settings:
             run('./manage.py migrate --noinput')
 
 
-collect_static = CollectStaticTask()
+collectstatic = CollectStaticTask()
 migrate = MigrateTask()

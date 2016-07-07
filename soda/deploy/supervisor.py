@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from fabric.api import run
 
-from ..fabric.base import BaseTask
-from soda.misc import display, lock_task
+from ..fabric.base import ConflictingTask
+from soda.misc import display
 
 
 __all__ = [
@@ -12,26 +12,24 @@ __all__ = [
 ]
 
 
-class StopTask(BaseTask):
+class StopTask(ConflictingTask):
     """Stop the Supervisor service
     """
 
     name = 'stop'
 
-    @lock_task
     def run(self):
         with self.user:
             display.info('Stopping the app...')
             run('supervisorctl stop {}'.format(self.roledef['service_name']))
 
 
-class StartTask(BaseTask):
+class StartTask(ConflictingTask):
     """Start the Supervisor service
     """
 
     name = 'start'
 
-    @lock_task
     def run(self):
         with self.user:
             display.info('Starting the app...')
