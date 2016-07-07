@@ -1,10 +1,10 @@
 from __future__ import absolute_import
 
 from fabric.api import env, local, run
-from fabric.context_managers import cd, hide, settings
+from fabric.context_managers import hide
 
 from ..fabric.base import BaseTask
-from soda.misc import display, get_effective_role, lock_task
+from soda.misc import display, lock_task
 
 
 __all__ = [
@@ -21,12 +21,8 @@ class DisplayVersionTask(BaseTask):
     name = 'display_version'
 
     def run(self):
-        role, roledef = get_effective_role()
-        logged_user = settings(user=roledef['user'])
-        cwd = cd(roledef['app_path'])
-
         display.info('Retrieving current app version...')
-        with hide('everything'), logged_user, cwd:
+        with hide('everything'), self.user, self.in_app:
             print(run('git log -1'))
 
 
@@ -38,11 +34,7 @@ class UpdateSourcesTask(BaseTask):
 
         @lock_task
         def run(self, revision):
-            role, roledef = get_effective_role()
-            logged_user = settings(user=roledef['user'])
-            cwd = cd(roledef['app_path'])
-
-            with hide('everything'), logged_user, cwd:
+            with hide('everything'), self.user, self.in_app:
                 # Get the used remote name
                 git_remote = run('git remote')
 
@@ -74,12 +66,8 @@ class CheckLocalRemoteTask(BaseTask):
         name = 'check_local_remote'
 
         def run(self, revision):
-            role, roledef = get_effective_role()
-            logged_user = settings(user=roledef['user'])
-            cwd = cd(roledef['app_path'])
-
             display.info('Checking local and remote revisions...')
-            with hide('everything'), logged_user, cwd:
+            with hide('everything'), self.user, self.in_app:
                 # Check local revision
                 local_branch = local(
                     'git rev-parse --abbrev-ref HEAD', capture=True)

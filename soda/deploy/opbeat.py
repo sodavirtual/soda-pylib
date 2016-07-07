@@ -4,7 +4,7 @@ from fabric.api import local
 from fabric.decorators import runs_once
 
 from ..fabric.base import BaseTask
-from soda.misc import display, get_effective_role
+from soda.misc import display
 
 
 __all__ = [
@@ -23,8 +23,6 @@ class RegisterDeployTask(BaseTask):
 
     @runs_once
     def run(self):
-        role, roledef = get_effective_role()
-
         display.info('Registering deployment to Opbeat...')
         revision = local('git log -n 1 --pretty="format:%H"', capture=True)
         branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
@@ -36,7 +34,7 @@ class RegisterDeployTask(BaseTask):
             ' -d branch={branch}'
             ' -d status=completed').format(
                 base_url=BASE_URL,
-                opbeat=roledef['opbeat'],
+                opbeat=self.roledef['opbeat'],
                 rev=revision,
                 branch=branch,
         ))

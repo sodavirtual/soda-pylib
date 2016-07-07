@@ -29,13 +29,12 @@ class CreateCert(BaseTask):
         email = input('Insert the certificate manager email address: ')
         domains = input('Insert the domains to apply: ').split()
 
-        role, roledef = get_effective_role()
-        logged_user = settings(user='root')
-        cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
+        user = settings(user='root')
+        cwd = cd(self.roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
         warn_only = settings(warn_only=True)
 
         # Generate the certificate
-        with logged_user, cwd, warn_only:
+        with user, cwd, warn_only:
             result = run((
                 './letsencrypt-auto certonly --standalone '
                 '--email {email} {domains}'
@@ -67,13 +66,12 @@ class RenewCerts(BaseTask):
         # Stop nginx first
         execute(nginx.stop)
 
-        role, roledef = get_effective_role()
-        logged_user = settings(user='root')
-        cwd = cd(roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
+        user = settings(user='root')
+        cwd = cd(self.roledef.get('letsencrypt_dir', '/opt/letsencrypt'))
         warn_only = settings(warn_only=True)
 
         # Generate the certificate
-        with logged_user, cwd, warn_only:
+        with user, cwd, warn_only:
             result = run('./letsencrypt-auto renew --standalone')
 
         # Display a result message
