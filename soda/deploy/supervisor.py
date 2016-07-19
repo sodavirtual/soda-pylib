@@ -1,30 +1,40 @@
 from __future__ import absolute_import
 
-from fabric.api import run, task
-from fabric.context_managers import settings
+from fabric.api import run
 
-from soda.misc import display, get_effective_role, lock_task
+from ..fabric.base import ConflictingTask
+from soda.misc import display
 
 
-@task
-@lock_task
-def stop():
+__all__ = [
+    'stop',
+    'start',
+]
+
+
+class StopTask(ConflictingTask):
     """Stop the Supervisor service
     """
-    role, roledef = get_effective_role()
-    logged_user = settings(user=roledef['user'])
-    with logged_user:
-        display.info('Stopping the app...')
-        run('supervisorctl stop {}'.format(roledef['service_name']))
+
+    name = 'stop'
+
+    def run(self):
+        with self.user:
+            display.info('Stopping the app...')
+            run('supervisorctl stop {}'.format(self.roledef['service_name']))
 
 
-@task
-@lock_task
-def start():
+class StartTask(ConflictingTask):
     """Start the Supervisor service
     """
-    role, roledef = get_effective_role()
-    logged_user = settings(user=roledef['user'])
-    with logged_user:
-        display.info('Starting the app...')
-        run('supervisorctl start {}'.format(roledef['service_name']))
+
+    name = 'start'
+
+    def run(self):
+        with self.user:
+            display.info('Starting the app...')
+            run('supervisorctl start {}'.format(self.roledef['service_name']))
+
+
+stop = StopTask()
+start = StartTask()
