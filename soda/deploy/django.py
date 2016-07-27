@@ -7,7 +7,7 @@ from soda.misc import display
 
 
 __all__ = [
-    'collect_static',
+    'collectstatic',
     'migrate',
 ]
 
