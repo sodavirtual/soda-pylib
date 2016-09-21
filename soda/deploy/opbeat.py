@@ -24,6 +24,13 @@ class RegisterDeployTask(BaseTask):
     @runs_once
     def run(self):
         display.info('Registering deployment to Opbeat...')
+
+        # Do not communicate to Opbeat if it's not set up
+        if 'opbeat' not in self.roledef:
+            display.warning(
+                'Opbeat is not set up for {}'.format(self.roledef['name']))
+            return
+
         revision = local('git log -n 1 --pretty="format:%H"', capture=True)
         branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
         local((
@@ -38,5 +45,6 @@ class RegisterDeployTask(BaseTask):
                 rev=revision,
                 branch=branch,
         ))
+
 
 register_deploy = RegisterDeployTask()
