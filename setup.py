@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from codecs import open
 from os import path
 import re
