@@ -44,10 +44,8 @@ class UpdateSourcesTask(ConflictingTask):
 
                 # Check working directory
                 display.info('Checking app directory...')
-                git_status = run('git status --porcelain')
-                if filter(
-                        lambda l: l and not l[:2] == '??',
-                        git_status.split('\n')):
+                git_status = run('git status --porcelain -uno').strip()
+                if git_status:
                     print(git_status)
                     display.error(
                         'App directory is dirty.', abort_task=not env.force)
