@@ -31,7 +31,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
 
     # The project's main homepage.
-    url='https://gitlab.com/sodavirtual/soda-pylib',
+    url='https://github.com/sodavirtual/soda-pylib',
 
     # Author details
     author='Evandro Myller',
